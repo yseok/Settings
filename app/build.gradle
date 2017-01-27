@@ -1,0 +1,65 @@
+// 모듈의 용도 : application, library
+apply plugin: 'com.android.application'
+
+// 안드로이드 앱관련 설정
+android {
+    compileSdkVersion 25
+    // 빌드 툴 버전
+    buildToolsVersion "25.0.2"
+    // 컴파일러 버전, 빌드 툴 버전 두가지가 있다.
+
+    defaultConfig {
+        applicationId "com.yuseok.android.settings" // 앱의 고유 ID, 앱의 root package 명을 사용
+        minSdkVersion 15        // 지원하는 최하위 안드로이드 버전 (버전과 API 레벨 두가지가 또 있다.)
+        targetSdkVersion 25     // 컴파일과 빌드의 목표가 되는 버전
+        versionCode 1           // 내부적으로 관리되는 버전 (정수)
+        versionName "1.0"       // 외부적으로 알려지는 앱 버전
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner" // 테스트환경
+    }
+
+    // 컴파일된 여러가지 타입을 만들 수 있다. 여기서 설정해서 한번에 여러 버전 생성 가능하다.
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "MYURL", "\"배포용 버전\"");
+
+        }
+        debug {
+            buildConfigField("String", "MYURL", "\"개발용 버전\"");
+        }
+    }
+
+    // 풀버전인지 데모버전인지 유료버전인지 무료버전인지 나눠서 빌드가능
+    productFlavors{
+        google{
+            versionName "1.0-google"
+        }
+        // naver, 통신사 3사가 onestore로 통합됨
+        onestore{
+            versionName "1.0-onestore"
+        }
+        samsung{
+            versionName "1.0-samsung"
+        }
+    }
+}
+
+
+
+
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // 화면 테스트용 라이브러리 - 지워도 됨
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    // 하위 버전 호환성을 위한 라이브러리
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    // 소스코드 테스트용 라이브러리
+    testCompile 'junit:junit:4.12'
+}
